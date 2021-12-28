@@ -1,5 +1,5 @@
 const customExpress = require('./configs/customExpress')
-const connection = require('./infrastructure/connection')
+const connection = require('./infrastructure/connections')
 const tables = require('./infrastructure/tables')
 
 connection.connect((error) => {
@@ -13,5 +13,5 @@ connection.connect((error) => {
 
         app.listen(3000, () => console.log("servidor rodando na porta 3000"))
     }
-})
+}) 
 
