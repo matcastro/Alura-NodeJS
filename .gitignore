@@ -126,4 +126,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 nodejs-rest/infrastructure/connection.js
-nodejs-rest/infrastructure/connections.js
+nodejs-rest/infrastructure/database/connections.js
