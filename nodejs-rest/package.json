@@ -11,8 +11,10 @@
   "author": "Mateus Ribeiro",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "consign": "^0.1.6",
     "express": "^4.17.2",
+    "faker": "^5.5.3",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3"
   },
