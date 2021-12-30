@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-rest-padronizada",
+  "version": "1.0.0",
+  "description": "Segundo curso de api node da Alura",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon api/index.js",
+    "debug": "nodemon --inspect api/index.js"
+  },
+  "author": "Mateus Ribeiro",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.6",
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.12.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
