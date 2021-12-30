@@ -9,6 +9,7 @@ const executaQuery = (query, parametros = '') => {
                 resolve(resultados)
             }
         })
-    }) 
-    
+    })    
 }
+
+module.exports = executaQuery
