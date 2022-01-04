@@ -23,7 +23,7 @@ module.exports = {
         return encontrado
     },
     
-    async atualizar(id, dadosParaAtualizar){
+    atualizar(id, dadosParaAtualizar){
         return Modelo.update(
             dadosParaAtualizar,
             {
@@ -32,5 +32,11 @@ module.exports = {
                 }
             }
         )
+    },
+
+    remover (id) {
+        return Modelo.destroy({
+            where: {id: id}
+        })
     }
 }
