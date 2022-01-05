@@ -20,7 +20,6 @@ module.exports = {
         if (!encontrado){
             throw new NaoEncontrado()
         }
-
         return encontrado
     },
     
