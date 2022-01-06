@@ -27,6 +27,11 @@ app.use((req, res, proximo) => {
     proximo()
 })
 
+app.use((req, res, proximo) => {
+    res.set('X-Powered-By', 'Gatito Petshop')
+    proximo()
+  })
+
 const roteador = require('./rotas/fornecedores')
 app.use('/api/fornecedores', roteador)
 
