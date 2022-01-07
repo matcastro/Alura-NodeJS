@@ -1,0 +1,5 @@
+iniciar as pastas e arquivos padrão do sequelize > npx sequelize-cli init
+comando para criar os scripts de migração de criaçaõ de tabela > npx sequelize-cli model:create --name Pessoas --attributes nome:string,ativo:boolean,email:string,role:string
+aplicar uma migração > npx sequelize-cli db:migrate
+criação de um arquivo padrão de seed (popular banco de dados) > npx sequelize-cli seed:generate --name demo-pessoa
+aplicar os seed > npx sequelize-cli db:seed:all
