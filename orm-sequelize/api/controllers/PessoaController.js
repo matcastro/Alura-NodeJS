@@ -41,6 +41,22 @@ class PessoaController {
         }
     }
 
+    static async apagaPessoa(req, res) {
+        try{
+            const { id } = req.params
+            await database.Pessoas.destroy({
+                where:{
+                    id: Number(id)
+                }
+            })
+            return res.status(204).end()
+        } catch(error){
+            return res
+                      .status(500)
+                      .json(error.message)
+        }
+    }
+
     static async atualizaPessoa(req, res) {
         try{
             const { id } = req.params
@@ -64,7 +80,7 @@ class PessoaController {
         }
     }
 
-    static async apagaMatricula(req, res) {
+    static async apagaPessoa(req, res) {
         try{
             const { id } = req.params
             await database.Pessoas.destroy({
@@ -73,6 +89,24 @@ class PessoaController {
                 }
             })
             return res.status(204).end()
+        } catch(error){
+            return res
+                      .status(500)
+                      .json(error.message)
+        }
+    }
+
+    static async restauraPessoa(req, res) {
+        try{
+            const { id } = req.params
+            await database.Pessoas.restore({
+                where:{
+                    id: Number(id)
+                }
+            })
+            return res
+                      .status(204)
+                      .end()
         } catch(error){
             return res
                       .status(500)
@@ -144,6 +178,25 @@ class PessoaController {
                 }
             })
             return res.status(204).end()
+        } catch(error){
+            return res
+                      .status(500)
+                      .json(error.message)
+        }
+    }
+
+    static async restauraMatricula(req, res) {
+        try{
+            const { estudanteId, matriculaId } = req.params
+            await database.Matriculas.restore({
+                where:{
+                    id: Number(matriculaId),
+                    estudante_id: estudanteId
+                }
+            })
+            return res
+                      .status(204)
+                      .end()
         } catch(error){
             return res
                       .status(500)

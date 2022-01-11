@@ -57,6 +57,24 @@ class NivelController {
     }
   }
 
+  static async restauraNivel(req, res) {
+    try{
+        const { id } = req.params
+        await database.Niveis.restore({
+            where:{
+                id: Number(id)
+            }
+        })
+        return res
+                  .status(204)
+                  .end()
+    } catch(error){
+        return res
+                  .status(500)
+                  .json(error.message)
+    }
+}
+
 }
 
 module.exports = NivelController
