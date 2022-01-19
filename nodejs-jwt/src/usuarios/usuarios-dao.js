@@ -4,15 +4,16 @@ const { InternalServerError } = require('../erros');
 module.exports = {
   adiciona: usuario => {
     return new Promise((resolve, reject) => {
+      console.log(usuario)
       db.run(
         `
           INSERT INTO usuarios (
             nome,
             email,
-            senha
+            senhaHash
           ) VALUES (?, ?, ?)
         `,
-        [usuario.nome, usuario.email, usuario.senha],
+        [usuario.nome, usuario.email, usuario.senhaHash],
         erro => {
           if (erro) {
             reject(new InternalServerError('Erro ao adicionar o usuário!'));
