@@ -1,4 +1,4 @@
-const blacklist = require('./blacklist')
+const blacklist = require('./blocklist')
 const { promisify } = require('util')
 
 const existsAsync = promisify(blacklist.exists).bind(blacklist)
