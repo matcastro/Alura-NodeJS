@@ -26,5 +26,15 @@ module.exports = {
     } catch (erro) {
       return res.status(500).json({ erro: erro });
     }
+  },
+
+  remover: async (req, res) => {
+    try {
+      id = req.params.id
+      await Post.deleta(id)
+      res.status(204).end()
+    } catch(erro) {
+      res.status(500).json({ erro: erro.message });
+    }
   }
 };

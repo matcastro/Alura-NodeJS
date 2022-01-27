@@ -23,6 +23,10 @@ class Post {
   static lista() {
     return postsDao.lista();
   }
+
+  static deleta(id){
+    return postsDao.deleta(id)
+  }
 }
 
 module.exports = Post;

@@ -32,5 +32,19 @@ module.exports = {
         return resolve(resultados);
       });
     });
+  },
+
+  deleta: (id) => {
+    return new Promise((resolve, reject) => {
+      db.run(`DELETE FROM posts WHERE id = ?`,
+      [id],
+      erro => {
+        if (erro) {
+          return reject('Erro ao deletar o post!');
+        }
+
+        return resolve();
+      })
+    })
   }
 };
