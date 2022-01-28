@@ -9,16 +9,8 @@ module.exports = {
             'local', 
             { session: false }, 
             (erro, usuario, info) => {
-                if(erro && erro.name === 'InvalidArgumentError') {
-                    return res.status(401).json({erro: erro.message})
-                }
-
-                if(erro){
-                    return res.status(500).json({ erro: erro.message})
-                }
-
-                if(!usuario){
-                    return res.status(401).json()
+                if (erro) {
+                    return next(erro)
                 }
                 req.user = usuario
                 req.estaAutenticado = true
@@ -31,20 +23,9 @@ module.exports = {
             'bearer', 
             { session: false }, 
             (erro, usuario, info) => {
-                if(erro && erro.name === 'JsonWebTokenError') {
-                    return res.status(401).json({erro: erro.message})
-                }
-
-                if (erro && erro.name === 'TokenExpiredError') {
-                    return res.status(401).json({erro: erro.message, expiradoEm: erro.expiredAt})
-                }
-
+                
                 if(erro){
-                    return res.status(500).json({ erro: erro.message})
-                }
-                console.log(usuario)
-                if(!usuario){
-                    return res.status(401).json()
+                    next(erro)
                 }
 
                 req.token = info.token
@@ -62,10 +43,7 @@ module.exports = {
             req.user = await Usuario.buscaPorId(id)
             return next() 
         } catch(erro){
-            if(erro.name === 'InvalidArgumentError'){
-                return res.status(401).json({ erro: erro.message })
-            }
-            return res.status(500).json({ erro: erro.message })
+            next(erro)
         }
     },
 
@@ -77,17 +55,7 @@ module.exports = {
             req.user = usuario
             next()
         } catch (error){
-            if(error && error.name === 'JsonWebTokenError') {
-                return res.status(401).json({erro: error.message})
-            }
-
-            if (error && error.name === 'TokenExpiredError') {
-                return res.status(401).json({erro: error.message, expiradoEm: error.expiredAt})
-            }
-
-            if(error){
-                return res.status(500).json({ erro: error.message})
-            }
+            next(erro)
         }
     }
 }

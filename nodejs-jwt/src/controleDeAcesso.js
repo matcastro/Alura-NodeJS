@@ -13,8 +13,10 @@ controle
 
 controle
     .grant('admin')
+    .readAny('post')
     .createAny('post')
     .deleteAny('post')
+    .readAny('usuario')
     .createAny('usuario')
     .deleteAny('usuario')
 

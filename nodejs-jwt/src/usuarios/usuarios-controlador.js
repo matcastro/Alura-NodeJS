@@ -10,7 +10,7 @@ function geraEndereco(rota, token){
 }
 
 module.exports = {
-  async adiciona (req, res) {
+  async adiciona (req, res, proximo) {
     const { nome, email, senha, cargo } = req.body;
 
     try {
@@ -31,61 +31,57 @@ module.exports = {
 
       res.status(201).json();
     } catch (erro) {
-      if (erro instanceof InvalidArgumentError) {
-        res.status(422).json({ erro: erro.message });
-      } else if (erro instanceof InternalServerError) {
-        res.status(500).json({ erro: erro.message });
-      } else {
-        res.status(500).json({ erro: erro.message });
-      }
+      proximo(erro)
     }
   },
 
-  async login(req, res) {
+  async login(req, res, proximo) {
     try{
       const accessToken = tokens.access.cria(req.user.id)
       const refreshToken = await tokens.refresh.cria(req.user.id)
       res.set('Authorization', accessToken)
       res.status(200).json({ refreshToken })
     } catch(error) {
-      res.status(500).json({ erro: error.message });
+      proximo(error)
     }
   },
 
-  async logout (req, res) {
+  async logout (req, res, proximo) {
     try{
       const token = req.token;
       await tokens.access.invalida(token)
       res.status(204).send()
     } catch(error){
-      console.log(error)
-      res.status(500).json({ error: error.message})
+      proximo(error)
     }
   },
 
-  async lista (req, res) {
-    const usuarios = await Usuario.lista();
-    res.json(usuarios);
+  async lista (req, res, proximo) {
+    try{
+      const usuarios = await Usuario.lista();
+      res.json(usuarios);
+    } catch(erro) {
+      proximo(erro)
+    }
   },
 
-  async verificaEmail(req, res) {
+  async verificaEmail(req, res, proximo) {
     try {
       const usuario = req.user
       await usuario.verificaEmail()
       res.status(200).json()
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ error: error.message})
+      proximo(error)
     }
   },
 
-  async deleta (req, res) {
-    const usuario = await Usuario.buscaPorId(req.params.id);
+  async deleta (req, res, proximo) {
     try {
+      const usuario = await Usuario.buscaPorId(req.params.id);
       await usuario.deleta();
       res.status(200).send();
     } catch (erro) {
-      res.status(500).json({ erro: erro });
+      proximo(erro)
     }
   }
 };
