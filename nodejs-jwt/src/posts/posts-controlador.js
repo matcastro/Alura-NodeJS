@@ -19,8 +19,11 @@ module.exports = {
 
   async lista (req, res) {
     try {
-      const posts = await Post.listarPorAutor(req.user.id)
+      let posts = await Post.listarTodos()
 
+      if(!req.estaAutenticado){
+        posts = posts.map(post => ({ titulo: post.titulo, conteudo: post.conteudo }))
+      }
       res.json(posts)
     } catch (erro) {
       return res.status(500).json({ erro: erro.message })
@@ -38,7 +41,12 @@ module.exports = {
 
   async remover (req, res) {
     try {
-      const post = await Post.buscaPorId(req.params.id, req.user.id)
+      let post
+      if (req.acesso.todos.permitido === true) {
+          post = await Post.buscaPorId(req.params.id)
+      } else if (req.acesso.apenasSeu.permitido === true) {
+          post = await Post.buscaPorIdAutor(req.params.id, req.user.id)
+      }
       post.remover()
       res.status(204)
       res.end()
