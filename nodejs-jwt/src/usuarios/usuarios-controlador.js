@@ -1,9 +1,10 @@
 const Usuario = require('./usuarios-modelo');
-const { InvalidArgumentError, InternalServerError } = require('../erros');
+const { NaoEncontrado, InvalidArgumentError } = require('../erros');
 
 const tokens = require('./tokens')
-const {EmailVerificacao} = require('./emails')
-const { ConversorUsuario } = require('../conversores')
+const {EmailVerificacao, EmailRedefinicaoSenha} = require('./emails')
+const { ConversorUsuario } = require('../conversores');
+const { redefinicaoDeSenha } = require('./tokens');
 
 function geraEndereco(rota, token){
   const baseURL = process.env.BASE_URL
@@ -86,6 +87,43 @@ module.exports = {
       await usuario.deleta();
       res.status(200).send();
     } catch (erro) {
+      proximo(erro)
+    }
+  },
+  
+  async esqueciMinhaSenha (req, res, proximo) {
+    const respostaPadrao = { mensagem: 'Se encontrarmos um usuário com este email, vamos enviar uma mensagem com as instruções para redefinir a senha.'}
+    try{
+      const email = req.body.email
+      const usuario = await Usuario.buscaPorEmail(email)
+
+      const token = await tokens.redefinicaoDeSenha.cria(usuario.id)
+
+      const emailRedefinicaoSenha = new EmailRedefinicaoSenha(usuario, token)
+      emailRedefinicaoSenha.enviaEmail()
+      res.send(respostaPadrao)
+    } catch(erro){
+      if(erro instanceof NaoEncontrado){
+        res.send(respostaPadrao)
+        return
+      }
+      proximo()
+    }
+  },
+
+  async trocarSenha(req, res, proximo){
+    try{
+      if(req.body.token === 'string' && req.body.token.length > 0) {
+        throw new InvalidArgumentError('O token está invalido')
+      }
+
+      const id = await tokens.redefinicaoDeSenha.verifica(req.body.token)
+      const usuario = await Usuario.buscaPorId(id)
+      await usuario.adicionaSenha(req.body.senha)
+      await usuario.atualizaSenha()
+      redefinicaoDeSenha.invalida(req.body.token)
+      res.send({ mensagem: 'Sua senha foi atualizada com sucesso!'})
+    } catch (erro){
       proximo(erro)
     }
   }

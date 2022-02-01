@@ -35,6 +35,10 @@ class Usuario {
     this.id = id
   }
 
+  async atualizaSenha() {
+    return await usuariosDao.atualizaSenha(this.senhaHash, this.id)
+  }
+
   async adicionaSenha(senha) {
     validacoes.campoStringNaoNulo(senha, 'senha');
     validacoes.campoTamanhoMinimo(senha, 'senha', 8);

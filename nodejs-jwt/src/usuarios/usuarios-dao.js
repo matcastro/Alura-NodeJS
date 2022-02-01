@@ -116,5 +116,22 @@ module.exports = {
         }
       );
     });
+  },
+  atualizaSenha: (senha, id) => {
+    return new Promise((resolve, reject) => {
+      db.run(
+        `UPDATE usuarios SET senhaHash = ? WHERE id = ?`,
+        [
+          senha,
+          id
+        ],
+        erro => {
+          if(erro) {
+            return reject('Erro ao tentar atualizar a senha do usuário!')
+          }
+          return resolve();
+        }
+      )
+    })
   }
 };
