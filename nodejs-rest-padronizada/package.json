@@ -7,7 +7,8 @@
     "start": "nodemon api/index.js",
     "debug": "nodemon --inspect api/index.js",
     "lint": ".\\node_modules\\.bin\\eslint .",
-    "lint:fix": ".\\node_modules\\.bin\\eslint . --fix"
+    "lint:fix": ".\\node_modules\\.bin\\eslint . --fix",
+    "test": ".\\node_modules\\.bin\\jest"
   },
   "author": "Mateus Ribeiro",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
+    "jest": "^27.4.7",
     "nodemon": "^2.0.15"
   }
 }
