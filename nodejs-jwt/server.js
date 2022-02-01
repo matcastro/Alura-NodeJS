@@ -5,7 +5,8 @@ const db = require('./database');
 
 require('./redis/blocklist-access-token')
 require('./redis/allowlist-refresh-token')
-const { InvalidArgumentError, NaoEncontrado, NaoAutorizado } = require('./src/erros');
+const { InvalidArgumentError, NaoEncontrado, NaoAutorizado } = require('./src/erros')
+const { ConversorErro } = require('./src/conversores')
 const jwt = require('jsonwebtoken')
 
 app.use((req, res, proximo) => {
@@ -31,6 +32,7 @@ app.use((erro, req, res, proximo) => {
     const corpo = {
         mensagem: erro.message
     }
+    const conversor = new ConversorErro('json')
 
     if(erro instanceof InvalidArgumentError){
         status = 400
@@ -50,7 +52,7 @@ app.use((erro, req, res, proximo) => {
     }
 
     res.status(status)
-    res.json(corpo)
+    res.send(conversor.converter(corpo))
 })
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
